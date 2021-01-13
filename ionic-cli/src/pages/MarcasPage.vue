@@ -30,6 +30,13 @@ export default {
   created() {
     this.getMarcas();
   },
+  watch: {  // Para que se recarge la lista
+    '$route' (to, from) {
+      if (to.path === '/marcas' && from.path=== '/marcas/add') {
+        this.getMarcas()
+      }
+    }
+  },
   methods: {
     async getMarcas() {
       MarcaService.getMarcas().then(

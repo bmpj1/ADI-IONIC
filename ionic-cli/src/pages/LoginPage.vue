@@ -31,12 +31,10 @@ export default {
   methods: {
     async habdleLogin (credenciales) {
       this.$store.dispatch('auth/login', credenciales)
-          .then((res) =>{
-            console.log(res);
+          .then(() =>{
             //console.log(this.$store.state.auth.user.usuario.rol)
             //console.log(this.$store.getters["auth/getRol"])
-            let role = this.$store.getters["auth/getRol"]
-            console.log(role);
+            //let role = this.$store.getters["auth/getRol"]
             //role =='admin'? 
             //  this.$router.replace('/admin').catch(()=>{})
             //  :this.$router.replace('/articulos').catch(()=>{})
