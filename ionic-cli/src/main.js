@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import Axios from 'axios';
 import router from './router';
 
 import { IonicVue } from '@ionic/vue';
@@ -22,11 +23,29 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './theme/core.css';
+
+/* Import Global Components */
+import BaseLayout from './components/base/BaseLayout.vue';
+import store from './store';
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(store);
   
+/* Add Global Components */
+app.component('base-layout', BaseLayout);
+
+Axios.interceptors.request.use(async config => { // Agregamos el autorization al header al montar cualquier componente y realizar una petición
+  const token = store.getters['auth/getToken'];
+  // console.log(token)
+  if (token) {
+    config.headers.Authorization = 'BEARER ' + token+ 'asdasd';
+  }
+  return config;
+});
+
 router.isReady().then(() => {
   app.mount('#app');
 });

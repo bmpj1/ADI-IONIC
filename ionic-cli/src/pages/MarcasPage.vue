@@ -1,59 +1,44 @@
 <template>
-  <!-- Siempre usar ion-page alrededor de los componentes principales de la pagina que creamos con ionic y vue  -->
-  <ion-page>
-  
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Todas las Marcas</ion-title>
-      </ion-toolbar>
-    </ion-header>
-      <ion-list>
-        <ion-item >Marca1</ion-item>
-        <ion-item>Marca2</ion-item>
-        <ion-item>Marca3</ion-item>
-        <ion-item>Marca4</ion-item>
-      </ion-list>
-    <ion-content>
-    </ion-content>
-  
-  </ion-page>    
+  <base-layout pageTitle="Todas las Marcas">
+    <template v-slot:actions-end>
+      <ion-button router-link="/marcas/add">
+        <ion-icon slot="icon-only" :icon="add"></ion-icon>
+      </ion-button>
+    </template>
+    <marcas-list :marcas="marcas"></marcas-list>
+  </base-layout> 
 </template>
 
 <script>
-import { 
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent
-} from '@ionic/vue';
+import { IonButton, IonIcon } from '@ionic/vue';
+import { add } from 'ionicons/icons';
+import MarcasList from '../components/marcas/MarcasList.vue';
 import MarcaService from '../services/marca.service';
 
 export default {
-  components: {
-    IonPage,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent
-  },
   data: function(){
     return {
+      add,
       marcas: []
     }
+  },
+  components: {
+    MarcasList,
+    IonButton,
+    IonIcon
   },
   created() {
     this.getMarcas();
   },
   methods: {
-    getMarcas() {
-        MarcaService.getMarcas().then(
-            res => {
-                this.marcas = res.data;
-        }).catch(err =>{
-            console.log(err.response);
-        })
-    },
+    async getMarcas() {
+      MarcaService.getMarcas().then(
+        res => {
+          this.marcas = res.data;
+      }).catch(err =>{
+          console.log(err.response);
+      });
+    }
   }
 }
 </script>

@@ -1,15 +1,40 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 
-import MarcasPage from '../pages/MarcasPage.vue';
+import LoginPage from '../pages/LoginPage.vue';
+import RegistryPage from '../pages/RegistryPage.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/marcas'
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    component: LoginPage
+  },
+  {
+    path: '/registro',
+    component: RegistryPage
   },
   {
     path: '/marcas',
-    component: MarcasPage
+    component: () => import('../pages/MarcasPage.vue')
+  },
+  {
+    path: '/marcas/:id',
+    component: () => import('../pages/MarcaDetailsPage.vue')
+  },
+  {
+    path: '/marcas/add',
+    component: () => import('../pages/AddMarcaPage.vue'),
+    // beforeEnter(to,from,next){  // Comprobamos que es admin
+    //   let loggedIn = JSON.parse(localStorage.getItem('user'));
+    //   if(loggedIn && loggedIn.usuario && loggedIn.accessToken && loggedIn.usuario.rol=="admin"){
+    //     next()
+    //   }else{
+    //     next({name: 'Home'})
+    //   }
+    // }
   }
 ]
 
