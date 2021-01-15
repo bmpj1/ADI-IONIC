@@ -3,17 +3,9 @@
       <ion-grid v-if="!edit">
         <ion-row>
           <ion-col size="6">
-            <!--
-            <ion-thumbnail slot="start">
-              <ion-img 
-                :src="marca.image" 
-                :alt="marca.marca">
-              </ion-img>
-            </ion-thumbnail>
-            -->
-            <ion-item :router-link="`/marcas/${marca.id}`">
+            <ion-item >
               <ion-label>
-                {{ marca.marca}}
+                {{ categoria.nombre }}
               </ion-label>
             </ion-item>
           </ion-col>
@@ -35,7 +27,7 @@
         <ion-row>
           <form @submit.prevent="confirmEdit">
             <ion-item>
-              <ion-input :placeholder="marca.marca" type="text" required v-model="editMarca"></ion-input>
+              <ion-input :placeholder="categoria.nombre" type="text" required v-model="editCategoria"></ion-input>
               <ion-button type="submit" expand="block" fill="outline" color="success">
                 <ion-icon :icon="checkmarkCircleOutline"></ion-icon>
               </ion-button>
@@ -71,12 +63,12 @@ import {
   checkmarkCircleOutline,
   closeCircleOutline
 } from 'ionicons/icons'
-import MarcaService from '@/services/marca.service';
+import CategoriaService from '@/services/categoria.service';
 
 
 export default {
-  props: ["marca"],
-  emits: ['del-marca', 'edit-marca'],
+  props: ["categoria"],
+  emits: ['del-categoria', 'edit-categoria'],
   data() {
     return {
       pencilOutline,
@@ -84,13 +76,11 @@ export default {
       checkmarkCircleOutline,
       closeCircleOutline,
       edit: false,
-      editMarca: ''
+      editCategoria: ''
     }
-  },
+  }, 
   components: {
     IonItem,
-    // IonImg,
-    // IonThumbnail,
     IonLabel,
     IonIcon,
     IonGrid,
@@ -101,17 +91,17 @@ export default {
   },
   methods: {
     async del() {
-      const marca = { id: this.marca.id, marca: this.marca.marca };
-      this.$emit('del-marca', marca);
+      const categoria = { id: this.categoria.id, nombre: this.categoria.nombre };
+      this.$emit('del-categoria', categoria);
     },
     async confirmEdit() {
-      const marca = { id: this.marca.id, marca: this.editMarca };
-      MarcaService.updateMarca({
-          id: this.marca.id,
-          marca: this.editMarca
+      const categoria = { id: this.categoria.id, nombre: this.editCategoria }
+      CategoriaService.updateCategoria({
+          id: this.categoria.id,
+          nombre: this.editCategoria
       }).then(() =>{
         this.edit = !this.edit;
-        this.$emit('edit-marca', marca);
+        this.$emit('edit-categoria', categoria);
       }).catch(error => {
           //console.log(error.response)
           var message =

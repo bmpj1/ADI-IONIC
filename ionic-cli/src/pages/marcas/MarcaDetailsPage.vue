@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import MarcaOverview from '../components/marcas/MarcaOveview.vue';
-import MarcaService from '../services/marca.service';
+import MarcaOverview from '@/components/marcas/MarcaOveview.vue';
+import MarcaService from '@/services/marca.service';
 
 export default {
   components: {

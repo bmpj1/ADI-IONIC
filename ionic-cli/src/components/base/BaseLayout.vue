@@ -1,13 +1,15 @@
 <template>
   <!-- Siempre usar ion-page alrededor de los componentes principales de la pagina que creamos con ionic y vue  -->
   <ion-page>
-  
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button :default-href="pageDefaultBackLink"></ion-back-button>
+          <ion-menu-button v-if="loggedIn" menu="mainMenu" auto-hide="false"></ion-menu-button>
+          <ion-back-button v-if="pageDefaultBackLink" :default-href="pageDefaultBackLink"></ion-back-button>
         </ion-buttons>
+
         <ion-title>{{ pageTitle }}</ion-title>
+        
         <ion-buttons slot="end">
           <slot name="actions-end"></slot>
         </ion-buttons>
@@ -29,7 +31,8 @@ import {
   IonTitle,
   IonContent,
   IonBackButton,
-  IonButtons
+  IonButtons,
+  IonMenuButton
 } from '@ionic/vue';
 
 export default {
@@ -41,7 +44,13 @@ export default {
     IonTitle,
     IonContent,
     IonBackButton,
-    IonButtons
+    IonButtons,
+    IonMenuButton
   },
+  computed: {
+    loggedIn() {
+      return this.$store.getters["auth/loggedIn"];
+    }
+  }
 }
 </script>

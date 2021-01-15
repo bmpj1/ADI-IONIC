@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content scroll="false">
       <logo></logo>
-      <login @try-login="habdleLogin"></login>
+      <login @try-login="handleLogin"></login>
     </ion-content>
   </ion-page>
 </template>
@@ -10,7 +10,8 @@
 <script>
 import { 
   IonPage,
-  IonContent
+  IonContent,
+  alertController
 } from '@ionic/vue';
 
 import Login from '@/components/base/Login.vue';
@@ -29,7 +30,7 @@ export default {
     Login
   },
   methods: {
-    async habdleLogin (credenciales) {
+    async handleLogin (credenciales) {
       this.$store.dispatch('auth/login', credenciales)
           .then(() =>{
             //console.log(this.$store.state.auth.user.usuario.rol)
@@ -38,17 +39,27 @@ export default {
             //role =='admin'? 
             //  this.$router.replace('/admin').catch(()=>{})
             //  :this.$router.replace('/articulos').catch(()=>{})
-            this.$router.replace('/marcas').catch(()=>{});
+            this.$router.replace('/home').catch(()=>{});
           },
           error => {
-            this.loading = false;
-            this.message =
+            var message =
               (error.response && error.response.data) ||
               error.message ||
               error.toString();
-            this.message = this.message.message.toString();
-            // this.message = 'Error, contraseña/email incorrecto'
+            message = message.message.toString();
+            this.presentAlert(message);
           });
+    },
+    async presentAlert(message) {
+      const alert = await alertController
+        .create({
+          cssClass: 'my-custom-class',
+          header: 'Alert',
+          //subHeader: 'Subtitle',
+          message: message,
+          buttons: ['OK'],
+        });
+      return alert.present();
     }
   }
 }

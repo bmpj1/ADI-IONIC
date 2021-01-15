@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import BaseLayout from '../components/base/BaseLayout.vue';
-import CreateMarcaForm from '../components/marcas/CreateMarcaForm.vue';
-import MarcaService from '../services/marca.service';
+import BaseLayout from '@/components/base/BaseLayout.vue';
+import CreateMarcaForm from '@/components/marcas/CreateMarcaForm.vue';
+import MarcaService from '@/services/marca.service';
+import { alertController } from '@ionic/vue';
 
 export default {
   data() {
@@ -19,22 +20,30 @@ export default {
   },
   methods: {
     async saveMarca(marcaData) {
-      console.log(marcaData);
       MarcaService.addMarca({marca: marcaData.marca})
       .then(res => {
         console.log(res);
         this.$router.replace('/marcas').catch(()=>{});
       })
       .catch(error => {
-        console.log(error.response)
-        /*
-        this.loading = false;
-        this.message =
+        var message =
             (error.response && error.response.data) ||
             error.message ||
             error.toString();
-        this.message = this.message.message.toString();*/
+        message = message.message;
+        this.presentAlert(message);
       });
+    },
+    async presentAlert(message) {
+      const alert = await alertController
+        .create({
+          cssClass: 'my-custom-class',
+          header: 'Alert',
+          //subHeader: 'Subtitle',
+          message: message,
+          buttons: ['OK'],
+        });
+      return alert.present();
     }
   }
 }

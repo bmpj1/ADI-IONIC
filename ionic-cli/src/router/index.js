@@ -6,35 +6,149 @@ import RegistryPage from '../pages/RegistryPage.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    name: 'Home',
+    redirect: '/articulos',
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Login'})
+      }
+    }
+  },
+  {
+    path: '/home',
+    redirect: '/'
   },
   {
     path: '/login',
-    component: LoginPage
+    name: 'Login',
+    component: LoginPage,
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next({name: 'Home'})
+      }else{
+        next()
+      }
+    }
+    
   },
   {
     path: '/registro',
-    component: RegistryPage
+    name: 'Registry',
+    component: RegistryPage,
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next({name: 'Home'})
+      }else{
+        next()
+      }
+    }
+    
   },
   {
     path: '/marcas',
-    component: () => import('../pages/MarcasPage.vue')
+    name: 'Marcas',
+    component: () => import('../pages/marcas/MarcasPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
   },
   {
     path: '/marcas/:id',
-    component: () => import('../pages/MarcaDetailsPage.vue')
+    name: 'MarcaDetail',
+    component: () => import('../pages/marcas/MarcaDetailsPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
   },
   {
     path: '/marcas/add',
-    component: () => import('../pages/AddMarcaPage.vue'),
-    // beforeEnter(to,from,next){  // Comprobamos que es admin
-    //   let loggedIn = JSON.parse(localStorage.getItem('user'));
-    //   if(loggedIn && loggedIn.usuario && loggedIn.accessToken && loggedIn.usuario.rol=="admin"){
-    //     next()
-    //   }else{
-    //     next({name: 'Home'})
-    //   }
-    // }
+    component: () => import('../pages/marcas/AddMarcaPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que es admin
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        if(loggedIn.usuario.rol=="admin")
+          next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
+  },
+  {
+    path: '/categorias',
+    name: 'Categorias',
+    component: () => import('../pages/categorias/CategoriasPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
+  },
+  {
+    path: '/categorias/add',
+    component: () => import('../pages/categorias/AddCategoriaPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que es admin
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        if(loggedIn.usuario.rol=="admin")
+          next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
+  },
+  {
+    path: '/articulos',
+    component: () => import('@/pages/articulos/ArticulosPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
+  },
+  {
+    path: '/articulos/:id',
+    component: () => import('@/pages/articulos/ArticuloDetailsPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
+  },
+  {
+    path: '/articulos/add',
+    component: () => import('@/pages/articulos/AddArticuloPage.vue'),
+    beforeEnter(to,from,next){  // Comprobamos que esta logueado
+      let loggedIn = JSON.parse(localStorage.getItem('user'));
+      if(loggedIn && loggedIn.usuario && loggedIn.accessToken){
+        next()
+      }else{
+        next({name: 'Home'})
+      }
+    }
   }
 ]
 
